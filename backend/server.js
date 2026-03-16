@@ -4,9 +4,9 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import http from "http";
 
-import {connectDB} from "./config/db.js";
-import {authRoutes} from "./routes/authRoutes.js";
-import {repoRoutes} from "./routes/repoRoutes.js";
+import {connectToDB} from "./config/db.js";
+// import {authRoutes} from "./routes/authRoutes.js";
+// import {repoRoutes} from "./routes/repoRoutes.js";
 import {startSocket} from "./sockets/socketServer.js";
 
 dotenv.config();
@@ -17,10 +17,10 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/auth",authRoutes);
-app.use("/repos",repoRoutes);
+// app.use("/auth",authRoutes);
+// app.use("/repos",repoRoutes);
 
-connectDB();
+connectToDB();
 
 const server=http.createServer(app);
 
