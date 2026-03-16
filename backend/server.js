@@ -4,28 +4,27 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import http from "http";
 
-import {connectToDB} from "./config/db.js";
-// import {authRoutes} from "./routes/authRoutes.js";
-// import {repoRoutes} from "./routes/repoRoutes.js";
-import {startSocket} from "./sockets/socketServer.js";
+import { connectToDB } from "./config/db.js";
+import { startSocket } from "./sockets/socketServer.js";
+import testRouter from "./routes/testRoutes.js";   // ✅ add this
 
 dotenv.config();
 
-const app=express();
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use("/auth",authRoutes);
-// app.use("/repos",repoRoutes);
+// ✅ register router
+app.use("/api/test", testRouter);
 
 connectToDB();
 
-const server=http.createServer(app);
+const server = http.createServer(app);
 
 startSocket(server);
 
-server.listen(process.env.PORT,()=>{
-console.log("Server running on",process.env.PORT);
+server.listen(process.env.PORT, () => {
+  console.log("Server running on", process.env.PORT);
 });

@@ -16,7 +16,12 @@ testRouter.get("/cloudinary-test", async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Cloudinary error:", error);
+
+    res.status(500).json({
+      message: "Cloudinary upload failed",
+      error: error
+    });
   }
 });
 
