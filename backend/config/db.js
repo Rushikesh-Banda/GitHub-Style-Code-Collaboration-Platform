@@ -1,7 +1,7 @@
 import {connect} from "mongoose"
 import { config } from "dotenv"
 
-config()
+config() //process.env
 
 export const connectToDB=async()=>{
     try{
