@@ -72,6 +72,15 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   try {
 
+    const token = req.cookies.token;
+
+    // if user not logged in
+    if (!token) {
+      return res.status(401).json({
+        message: "User not logged in"
+      });
+    }
+
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "lax",
@@ -111,6 +120,9 @@ export const changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user.userId);
+
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     const match = await bcrypt.compare(currentPassword, user.password);
 

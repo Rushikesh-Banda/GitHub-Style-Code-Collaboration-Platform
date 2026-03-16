@@ -12,9 +12,9 @@ POST http://localhost:2929/api/auth/register
 Content-Type: application/json
 
 {
-"username": "rushikesh",
-"email": "[rushikesh@gmail.com](mailto:rushikesh@gmail.com)",
-"password": "123456"
+"username": "rushikesh1",
+"email": "[rushikesh39@gmail.com](mailto:rushikesh39@gmail.com)",
+"password": "12345678"
 }
 
 ### Login User
@@ -23,8 +23,8 @@ POST http://localhost:2929/api/auth/login
 Content-Type: application/json
 
 {
-"email": "[rushikesh@gmail.com](mailto:rushikesh@gmail.com)",
-"password": "123456"
+"email": "[rushikesh39@gmail.com](mailto:rushikesh39@gmail.com)",
+"password": "12345678"
 }
 
 ### Logout User
@@ -62,11 +62,11 @@ GET http://localhost:2929/api/repos
 
 ### Get Single Repository
 
-GET http://localhost:2929/api/repos/REPO_ID
+GET http://localhost:2929/api/repos/69b7c61b57c2e19d476cdc4f
 
 ### Delete Repository
 
-DELETE http://localhost:2929/api/repos/REPO_ID
+DELETE http://localhost:2929/api/repos/69b7c61b57c2e19d476cdc4f
 
 ### Upload Project File
 
@@ -81,7 +81,7 @@ POST http://localhost:2929/api/commits
 Content-Type: application/json
 
 {
-"repoId": "REPO_ID",
+"repoId": "69b7c3bb1d82d708f350924b",
 "message": "Initial commit",
 "files": [
 {
@@ -101,14 +101,14 @@ POST http://localhost:2929/api/pull-requests
 Content-Type: application/json
 
 {
-"repoId": "REPO_ID",
+"repoId": "69b7c3bb1d82d708f350924b",
 "title": "New Feature",
 "description": "Added login feature"
 }
 
 ### Get Pull Requests
 
-GET http://localhost:2929/api/pull-requests/REPO_ID
+GET http://localhost:2929/api/pull-requests/69b7c3bb1d82d708f350924b
 
 ### Merge Pull Request
 
@@ -120,18 +120,18 @@ POST http://localhost:2929/api/issues
 Content-Type: application/json
 
 {
-"repoId": "REPO_ID",
+"repoId": "69b7c3bb1d82d708f350924b",
 "title": "Bug in login",
 "description": "Login button not working"
 }
 
 ### Get Issues of Repository
 
-GET http://localhost:2929/api/issues/REPO_ID
+GET http://localhost:2929/api/issues/69b7c3bb1d82d708f350924b
 
 ### Close Issue
 
-PUT http://localhost:2929/api/issues/close/ISSUE_ID
+PUT http://localhost:2929/api/issues/close/69b7cba8d90af26af55d6320
 
 ### Add Comment
 
@@ -145,4 +145,4 @@ Content-Type: application/json
 
 ### Get Issue Comments
 
-GET http://localhost:2929/api/comments/ISSUE_ID
+GET http://localhost:2929/api/comments/69b7cba8d90af26af55d6320
