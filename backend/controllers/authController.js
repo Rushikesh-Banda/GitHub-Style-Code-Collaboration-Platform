@@ -53,12 +53,78 @@ export const login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+    });
 
     res.json({
       message: "Login successful",
       user,
     });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Logout user
+export const logout = (req, res) => {
+  try {
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
+    res.json({
+      message: "Logged out successfully",
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Get current logged-in user profile
+export const getProfile = async (req, res) => {
+  try {
+
+    const user = await User.findById(req.user.userId).select("-password");
+
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Change password
+export const changePassword = async (req, res) => {
+  try {
+
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user.userId);
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+
+    if (!match)
+      return res.status(401).json({ message: "Current password incorrect" });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    await user.save();
+
+    res.json({
+      message: "Password updated successfully",
+    });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

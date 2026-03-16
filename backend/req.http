@@ -1,2 +1,148 @@
-###cloudinary test route
-http://localhost:2929/api/test/cloudinary-test
+### Test Server
+
+GET http://localhost:2929/api/test
+
+### Cloudinary Test
+
+GET http://localhost:2929/api/test/cloudinary-test
+
+### Register User
+
+POST http://localhost:2929/api/auth/register
+Content-Type: application/json
+
+{
+"username": "rushikesh",
+"email": "[rushikesh@gmail.com](mailto:rushikesh@gmail.com)",
+"password": "123456"
+}
+
+### Login User
+
+POST http://localhost:2929/api/auth/login
+Content-Type: application/json
+
+{
+"email": "[rushikesh@gmail.com](mailto:rushikesh@gmail.com)",
+"password": "123456"
+}
+
+### Logout User
+
+GET http://localhost:2929/api/auth/logout
+
+### Get Logged In User Profile
+
+GET http://localhost:2929/api/auth/me
+
+### Change Password
+
+PUT http://localhost:2929/api/auth/change-password
+Content-Type: application/json
+
+{
+"currentPassword": "123456",
+"newPassword": "654321"
+}
+
+### Create Repository
+
+POST http://localhost:2929/api/repos
+Content-Type: application/json
+
+{
+"name": "github-clone",
+"description": "My first repo",
+"visibility": "public"
+}
+
+### Get All Repositories
+
+GET http://localhost:2929/api/repos
+
+### Get Single Repository
+
+GET http://localhost:2929/api/repos/REPO_ID
+
+### Delete Repository
+
+DELETE http://localhost:2929/api/repos/REPO_ID
+
+### Upload Project File
+
+POST http://localhost:2929/api/upload
+Content-Type: multipart/form-data
+
+file=@test.js
+
+### Create Commit
+
+POST http://localhost:2929/api/commits
+Content-Type: application/json
+
+{
+"repoId": "REPO_ID",
+"message": "Initial commit",
+"files": [
+{
+"fileName": "index.js",
+"fileUrl": "https://cloudinary.com/file-url"
+}
+]
+}
+
+### Get Repository Commits
+
+GET http://localhost:2929/api/commits/REPO_ID
+
+### Create Pull Request
+
+POST http://localhost:2929/api/pull-requests
+Content-Type: application/json
+
+{
+"repoId": "REPO_ID",
+"title": "New Feature",
+"description": "Added login feature"
+}
+
+### Get Pull Requests
+
+GET http://localhost:2929/api/pull-requests/REPO_ID
+
+### Merge Pull Request
+
+PUT http://localhost:2929/api/pull-requests/merge/PR_ID
+
+### Create Issue
+
+POST http://localhost:2929/api/issues
+Content-Type: application/json
+
+{
+"repoId": "REPO_ID",
+"title": "Bug in login",
+"description": "Login button not working"
+}
+
+### Get Issues of Repository
+
+GET http://localhost:2929/api/issues/REPO_ID
+
+### Close Issue
+
+PUT http://localhost:2929/api/issues/close/ISSUE_ID
+
+### Add Comment
+
+POST http://localhost:2929/api/comments
+Content-Type: application/json
+
+{
+"issueId": "ISSUE_ID",
+"text": "I will fix this bug"
+}
+
+### Get Issue Comments
+
+GET http://localhost:2929/api/comments/ISSUE_ID
