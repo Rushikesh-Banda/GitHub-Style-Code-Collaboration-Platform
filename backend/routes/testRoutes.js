@@ -1,12 +1,13 @@
 import express from "express";
 import cloudinary from "../config/cloudinary.js";
 
-const router = express.Router();
+const testRouter = express.Router();
 
-router.get("/cloudinary-test", async (req, res) => {
+testRouter.get("/cloudinary-test", async (req, res) => {
   try {
+
     const result = await cloudinary.uploader.upload(
-      "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+      "https://static.vecteezy.com/vite/assets/photo-masthead-375-BoK_p8LG.webp"
     );
 
     res.json({
@@ -19,4 +20,4 @@ router.get("/cloudinary-test", async (req, res) => {
   }
 });
 
-export default router;
+export default testRouter;
