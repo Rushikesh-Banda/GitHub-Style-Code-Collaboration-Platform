@@ -25,7 +25,7 @@ router.get("/author/:userId", getCommitsByAuthor);
 router.get("/:id", getCommitById);
 
 // Update commit message
-router.put("/:id", verifyToken, updateCommitMessage);
+router.patch("/:id", verifyToken, updateCommitMessage);
 
 // Delete commit
 router.delete("/:id", verifyToken, deleteCommit);
