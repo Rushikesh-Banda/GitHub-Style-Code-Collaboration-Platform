@@ -16,6 +16,13 @@ status: {
 type: String,
 enum: ["open", "merged", "closed"],
 default: "open"
+},
+commits:{
+type:[{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Commit"
+}],
+default:[]
 }
 },
 { timestamps: true }

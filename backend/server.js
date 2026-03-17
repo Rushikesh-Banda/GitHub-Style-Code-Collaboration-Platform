@@ -66,3 +66,37 @@ startSocket(server);
 server.listen(process.env.PORT, () => {
   console.log("Server running on", process.env.PORT);
 });
+
+// Store socket instance globally for controllers
+const io = startSocket(server);
+app.set("io", io);
+
+
+// Health check route
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Server running",
+    time: new Date()
+  });
+});
+
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("Server error:", err);
+
+  res.status(err.status || 500).json({
+    message: err.message || "Internal server error"
+  });
+});
+
+
+// Graceful shutdown
+process.on("SIGINT", () => {
+  console.log("Shutting down server...");
+  server.close(() => {
+    console.log("Server closed");
+    process.exit(0);
+  });
+});

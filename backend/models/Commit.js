@@ -1,32 +1,36 @@
 import mongoose from "mongoose";
 
 const commitSchema = new mongoose.Schema({
-  message: {
-    type: String,
-    required: true
-  },
 
-  repository: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Repository"
-  },
+repoId:{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Repository",
+required:true
+},
 
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
+author:{
+type:mongoose.Schema.Types.ObjectId,
+ref:"User",
+required:true
+},
 
-  files: [
-    {
-      fileName: String,
-      fileUrl: String
-    }
-  ],
+message:{
+type:String,
+required:true
+},
 
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+files:{
+type:[
+{
+fileName:String,
+fileUrl:String
+}
+],
+default:[]
+}
+
+},{
+timestamps:true
 });
 
-export const Commit = mongoose.model("Commit", commitSchema);
+export const Commit = mongoose.model("Commit",commitSchema);

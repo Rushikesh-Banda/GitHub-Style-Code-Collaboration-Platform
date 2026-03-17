@@ -1,42 +1,37 @@
-### Test Server
-
-GET http://localhost:2929/api/test
-
 ### Cloudinary Test
-
 GET http://localhost:2929/api/test/cloudinary-test
 
-### Register User
 
+### Register User
 POST http://localhost:2929/api/auth/register
 Content-Type: application/json
 
 {
 "username": "rushikesh1",
-"email": "[rushikesh39@gmail.com](mailto:rushikesh39@gmail.com)",
-"password": "12345678"
+"email": "",
+"password": "123456"
 }
 
-### Login User
 
+### Login User
 POST http://localhost:2929/api/auth/login
 Content-Type: application/json
 
 {
-"email": "[rushikesh39@gmail.com](mailto:rushikesh39@gmail.com)",
+"email": "rushikesh39@gmail.com",
 "password": "12345678"
 }
 
-### Logout User
 
+### Logout User
 GET http://localhost:2929/api/auth/logout
 
-### Get Logged In User Profile
 
+### Get Logged In User Profile
 GET http://localhost:2929/api/auth/me
 
-### Change Password
 
+### Change Password
 PUT http://localhost:2929/api/auth/change-password
 Content-Type: application/json
 
@@ -45,8 +40,21 @@ Content-Type: application/json
 "newPassword": "654321"
 }
 
-### Create Repository
 
+### Update Profile
+PUT http://localhost:2929/api/auth/update-profile
+Content-Type: application/json
+
+{
+"username":"rushikesh-updated"
+}
+
+
+### Get All Users
+GET http://localhost:2929/api/auth/users
+
+
+### Create Repository
 POST http://localhost:2929/api/repos
 Content-Type: application/json
 
@@ -56,93 +64,230 @@ Content-Type: application/json
 "visibility": "public"
 }
 
-### Get All Repositories
 
+### Get All Repositories
 GET http://localhost:2929/api/repos
 
-### Get Single Repository
 
-GET http://localhost:2929/api/repos/69b7c61b57c2e19d476cdc4f
+### Get Single Repository
+GET http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8
+
+
+### Update Repository
+PUT http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8
+Content-Type: application/json
+
+{
+"name":"updated-repo-name"
+}
+
 
 ### Delete Repository
+DELETE http://localhost:2929/api/repos/69b7c3bb1d82d708f350924b
 
-DELETE http://localhost:2929/api/repos/69b7c61b57c2e19d476cdc4f
+
+### Add Collaborator
+POST http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8/collaborators
+Content-Type: application/json
+
+{
+"userId":"69b827b05d10226f6c0ae77c",
+"role":"collaborator"
+}
+
+
+### Get Collaborators
+GET http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8/collaborators
+
+
+### Update Collaborator Role
+PUT http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8/collaborators/69b827b05d10226f6c0ae77c
+Content-Type: application/json
+
+{
+"role":"viewer"
+}
+
+
+### Remove Collaborator
+DELETE http://localhost:2929/api/repos/69b7cac95a1f3baa261f44f8/collaborators/69b827b05d10226f6c0ae77c
 
 ### Upload Project File
-
 POST http://localhost:2929/api/upload
 Content-Type: multipart/form-data
 
 file=@test.js
 
-### Create Commit
 
+### Upload Multiple Files
+POST http://localhost:2929/api/upload/multiple
+Content-Type: multipart/form-data
+
+files=@index.js
+files=@app.js
+
+
+### Delete File
+DELETE http://localhost:2929/api/upload
+Content-Type: application/json
+
+{
+"publicId":"cloudinary_public_id"
+}
+
+
+### Update File
+PUT http://localhost:2929/api/upload
+Content-Type: multipart/form-data
+
+file=@updated.js
+
+### Create Commit
 POST http://localhost:2929/api/commits
 Content-Type: application/json
 
 {
-"repoId": "69b7c3bb1d82d708f350924b",
+"repoId": "69b7cac95a1f3baa261f44f8",
 "message": "Initial commit",
 "files": [
 {
 "fileName": "index.js",
-"fileUrl": "https://cloudinary.com/file-url"
+"fileUrl": "https://res.cloudinary.com/demo/file-url"
 }
 ]
 }
 
-### Get Repository Commits
 
-GET http://localhost:2929/api/commits/REPO_ID
+### Get Repository Commits
+GET http://localhost:2929/api/commits/69b7cac95a1f3baa261f44f8
+
+
+### Get Commit By ID
+GET http://localhost:2929/api/commits/id/69b82d7218cec0b14ab29b45
+
+
+### Update Commit Message
+PUT http://localhost:2929/api/commits/69b82d7218cec0b14ab29b45
+Content-Type: application/json
+
+{
+"message":"Updated commit message"
+}
+
+
+### Delete Commit
+DELETE http://localhost:2929/api/commits/COMMIT_ID
 
 ### Create Pull Request
-
 POST http://localhost:2929/api/pull-requests
 Content-Type: application/json
 
 {
-"repoId": "69b7c3bb1d82d708f350924b",
+"repoId": "69b7cac95a1f3baa261f44f8",
 "title": "New Feature",
 "description": "Added login feature"
 }
 
-### Get Pull Requests
 
-GET http://localhost:2929/api/pull-requests/69b7c3bb1d82d708f350924b
+### Get Pull Requests
+GET http://localhost:2929/api/pull-requests/69b7cac95a1f3baa261f44f8
+
+
+### Get Pull Request By ID
+GET http://localhost:2929/api/pull-requests/id/69b82dbf18cec0b14ab29b52
+
 
 ### Merge Pull Request
+PUT http://localhost:2929/api/pull-requests/merge/69b82dbf18cec0b14ab29b52
 
-PUT http://localhost:2929/api/pull-requests/merge/PR_ID
+
+### Close Pull Request
+PUT http://localhost:2929/api/pull-requests/close/69b82dbf18cec0b14ab29b52
+
+
+### Reopen Pull Request
+PUT http://localhost:2929/api/pull-requests/reopen/69b82dbf18cec0b14ab29b52
+
+
+### Update Pull Request
+PUT http://localhost:2929/api/pull-requests/69b82dbf18cec0b14ab29b52
+Content-Type: application/json
+
+{
+"title":"Updated PR title"
+}
+
+
+### Delete Pull Request
+DELETE http://localhost:2929/api/pull-requests/PR_ID
 
 ### Create Issue
-
 POST http://localhost:2929/api/issues
 Content-Type: application/json
 
 {
-"repoId": "69b7c3bb1d82d708f350924b",
+"repoId": "69b7cac95a1f3baa261f44f8",
 "title": "Bug in login",
 "description": "Login button not working"
 }
 
-### Get Issues of Repository
 
-GET http://localhost:2929/api/issues/69b7c3bb1d82d708f350924b
+### Get Issues of Repository
+GET http://localhost:2929/api/issues/69b7cac95a1f3baa261f44f8
+
+
+### Get Issue By ID
+GET http://localhost:2929/api/issues/id/69b82e1a18cec0b14ab29b60
+
 
 ### Close Issue
+PUT http://localhost:2929/api/issues/close/69b82e1a18cec0b14ab29b60
 
-PUT http://localhost:2929/api/issues/close/69b7cba8d90af26af55d6320
+
+### Reopen Issue
+PUT http://localhost:2929/api/issues/reopen/69b82e1a18cec0b14ab29b60
+
+
+### Update Issue
+PUT http://localhost:2929/api/issues/69b82e1a18cec0b14ab29b60
+Content-Type: application/json
+
+{
+"title":"Updated issue title"
+}
+
+
+### Delete Issue
+DELETE http://localhost:2929/api/issues/ISSUE_ID
 
 ### Add Comment
-
 POST http://localhost:2929/api/comments
 Content-Type: application/json
 
 {
-"issueId": "ISSUE_ID",
-"text": "I will fix this bug"
+"issueId": "69b82e1a18cec0b14ab29b60",
+"text": "I will fix this bug",
+"file": "loginController.js",
+"lineNumber": 18
 }
 
-### Get Issue Comments
 
-GET http://localhost:2929/api/comments/69b7cba8d90af26af55d6320
+### Get Issue Comments
+GET http://localhost:2929/api/comments/69b82e1a18cec0b14ab29b60
+
+
+### Get Comment By ID
+GET http://localhost:2929/api/comments/id/69b7c64257c2e19d476cdc56
+
+
+### Update Comment
+PUT http://localhost:2929/api/comments/69b7c64257c2e19d476cdc56
+Content-Type: application/json
+
+{
+"text":"Updated comment"
+}
+
+
+### Delete Comment
+DELETE http://localhost:2929/api/comments/69b7c64257c2e19d476cdc56

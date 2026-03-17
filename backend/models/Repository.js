@@ -1,20 +1,41 @@
 import mongoose from "mongoose";
 
-const repoSchema = new mongoose.Schema(
-{
+const repositorySchema = new mongoose.Schema({
+
 name: String,
+
 description: String,
+
+visibility: {
+type: String,
+enum: ["public","private"],
+default: "public"
+},
+
 owner: {
 type: mongoose.Schema.Types.ObjectId,
 ref: "User"
 },
-visibility: {
-type: String,
-enum: ["public", "private"],
-default: "public"
-}
-},
-{ timestamps: true }
-);
 
-export const Repository = mongoose.model("Repository", repoSchema);
+collaborators:{
+type:[
+{
+user:{
+type:mongoose.Schema.Types.ObjectId,
+ref:"User"
+},
+role:{
+type:String,
+enum:["owner","collaborator","viewer"],
+default:"viewer"
+}
+}
+],
+default:[]
+}
+
+},{
+timestamps:true
+});
+
+export const Repository = mongoose.model("Repository", repositorySchema);

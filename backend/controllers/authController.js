@@ -74,7 +74,6 @@ export const logout = (req, res) => {
 
     const token = req.cookies.token;
 
-    // if user not logged in
     if (!token) {
       return res.status(401).json({
         message: "User not logged in"
@@ -136,6 +135,47 @@ export const changePassword = async (req, res) => {
     res.json({
       message: "Password updated successfully",
     });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Update user profile
+export const updateProfile = async (req, res) => {
+  try {
+
+    const { username, email } = req.body;
+
+    const user = await User.findById(req.user.userId);
+
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    if (username) user.username = username;
+    if (email) user.email = email;
+
+    await user.save();
+
+    res.json({
+      message: "Profile updated successfully",
+      user
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Get all users (useful for collaborators)
+export const getAllUsers = async (req, res) => {
+  try {
+
+    const users = await User.find().select("-password");
+
+    res.json(users);
 
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -12,6 +12,13 @@ status: {
 type: String,
 enum: ["open", "closed"],
 default: "open"
+},
+comments:{
+type:[{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Comment"
+}],
+default:[]
 }
 },
 { timestamps: true }

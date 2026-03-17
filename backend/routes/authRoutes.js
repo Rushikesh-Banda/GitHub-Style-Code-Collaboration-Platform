@@ -4,7 +4,9 @@ import {
   login,
   logout,
   getProfile,
-  changePassword
+  changePassword,
+  updateProfile,
+  getAllUsers
 } from "../controllers/authController.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -27,5 +29,11 @@ authRoutes.get("/me", verifyToken, getProfile);
 
 // Change password
 authRoutes.put("/change-password", verifyToken, changePassword);
+
+// Update user profile
+authRoutes.put("/update-profile", verifyToken, updateProfile);
+
+// Get all users
+authRoutes.get("/users", verifyToken, getAllUsers);
 
 /* --------------------------------------------- */

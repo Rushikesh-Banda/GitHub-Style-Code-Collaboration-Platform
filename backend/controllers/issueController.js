@@ -45,3 +45,82 @@ export const closeIssue = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Get single issue
+export const getIssueById = async (req, res) => {
+  try {
+
+    const issue = await Issue.findById(req.params.id);
+
+    if (!issue) {
+      return res.status(404).json({
+        message: "Issue not found"
+      });
+    }
+
+    res.json(issue);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Reopen issue
+export const reopenIssue = async (req, res) => {
+  try {
+
+    const issue = await Issue.findByIdAndUpdate(
+      req.params.id,
+      { status: "open" },
+      { new: true }
+    );
+
+    res.json(issue);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Update issue
+export const updateIssue = async (req, res) => {
+  try {
+
+    const issue = await Issue.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.json(issue);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// Delete issue
+export const deleteIssue = async (req, res) => {
+  try {
+
+    const issue = await Issue.findById(req.params.id);
+
+    if (!issue) {
+      return res.status(404).json({
+        message: "Issue not found"
+      });
+    }
+
+    await issue.deleteOne();
+
+    res.json({
+      message: "Issue deleted"
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
