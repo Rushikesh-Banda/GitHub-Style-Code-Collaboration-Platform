@@ -1,27 +1,27 @@
+// commentController.js
 import { Comment } from "../models/Comment.js";
 
-// Add comment
 export const addComment = async (req, res) => {
   try {
-    const comment = new Comment({
-      ...req.body,
-      user: req.user.userId,
+    const { text, issue, pullRequest } = req.body;
+
+    const comment = await Comment.create({
+      text,
+      issue,
+      pullRequest,
+      user: req.user.userId
     });
 
-    const savedComment = await comment.save();
-
-    res.status(201).json(savedComment);
+    res.status(201).json(comment);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-
-// Get comments
 export const getComments = async (req, res) => {
   try {
     const comments = await Comment.find({
-      issueId: req.params.issueId,
+      issue: req.params.issueId
     }).populate("user", "username");
 
     res.json(comments);
@@ -30,12 +30,10 @@ export const getComments = async (req, res) => {
   }
 };
 
-// Get single comment
 export const getCommentById = async (req, res) => {
   try {
-
     const comment = await Comment.findById(req.params.id)
-      .populate("user","username");
+      .populate("user", "username");
 
     if (!comment) {
       return res.status(404).json({
@@ -44,35 +42,13 @@ export const getCommentById = async (req, res) => {
     }
 
     res.json(comment);
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-
-// Update comment
 export const updateComment = async (req, res) => {
   try {
-
-    const comment = await Comment.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-
-    res.json(comment);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-
-// Delete comment
-export const deleteComment = async (req, res) => {
-  try {
-
     const comment = await Comment.findById(req.params.id);
 
     if (!comment) {
@@ -81,12 +57,43 @@ export const deleteComment = async (req, res) => {
       });
     }
 
+    if (comment.user.toString() !== req.user.userId) {
+      return res.status(403).json({
+        message: "You can only edit your comments"
+      });
+    }
+
+    comment.text = req.body.text || comment.text;
+
+    await comment.save();
+
+    res.json(comment);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found"
+      });
+    }
+
+    if (comment.user.toString() !== req.user.userId) {
+      return res.status(403).json({
+        message: "You can only delete your comments"
+      });
+    }
+
     await comment.deleteOne();
 
     res.json({
       message: "Comment deleted"
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

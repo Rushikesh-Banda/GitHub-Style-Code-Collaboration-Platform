@@ -8,18 +8,20 @@ import { connectToDB } from "./config/db.js";
 import { startSocket } from "./sockets/socketServer.js";
 
 import testRouter from "./routes/testRoutes.js";
-import { authRoutes } from "./routes/authRoutes.js";
-import { repoRoutes } from "./routes/repoRoutes.js";
-import { commitRoutes } from "./routes/commitRoutes.js";
-import { pullRequestRoutes } from "./routes/pullRequestRoutes.js";
-import { issueRoutes } from "./routes/issueRoutes.js";
-import { commentRoutes } from "./routes/commentRoutes.js";
-import { uploadRoutes } from "./routes/uploadRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import repoRoutes from "./routes/repoRoutes.js";
+import commitRoutes from "./routes/commitRoutes.js";
+import pullRequestRoutes from "./routes/pullRequestRoutes.js";
+import issueRoutes from "./routes/issueRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
+import fileRoutes from "./routes/filesRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
+
+// Middleware
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
@@ -28,21 +30,32 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+
+// Health check (keep early)
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Server running",
+    time: new Date()
+  });
+});
+
+
 /* ---------------- API ROUTES ---------------- */
 
-// Test routes
+// Test
 app.use("/api/test", testRouter);
 
-// Authentication
+// Auth
 app.use("/api/auth", authRoutes);
 
-// Repository management
+// Repos
 app.use("/api/repos", repoRoutes);
 
-// Commit history
+// Commits
 app.use("/api/commits", commitRoutes);
 
-// Pull requests
+// Pull Requests
 app.use("/api/pull-requests", pullRequestRoutes);
 
 // Issues
@@ -51,34 +64,30 @@ app.use("/api/issues", issueRoutes);
 // Comments
 app.use("/api/comments", commentRoutes);
 
-// File upload
-app.use("/api/upload", uploadRoutes);
+// Files (merged upload + DB)
+app.use("/api/files", fileRoutes);
 
 /* -------------------------------------------- */
 
+
+// Connect DB
 connectToDB();
 
+
+// Create HTTP server
 const server = http.createServer(app);
 
-// WebSocket server
-startSocket(server);
 
-server.listen(process.env.PORT, () => {
-  console.log("Server running on", process.env.PORT);
-});
-
-// Store socket instance globally for controllers
+// Start socket ONLY ONCE
 const io = startSocket(server);
 app.set("io", io);
 
 
-// Health check route
-app.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    message: "Server running",
-    time: new Date()
-  });
+// Start server
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 

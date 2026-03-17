@@ -11,25 +11,27 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const issueRoutes = express.Router();
+const router = express.Router();
 
 // Create issue
-issueRoutes.post("/", verifyToken, createIssue);
+router.post("/", verifyToken, createIssue);
 
-// Get issues of repository
-issueRoutes.get("/:repoId", getIssues);
+// Get issues of repo
+router.get("/repo/:repoId", getIssues);
+
+// Get single issue
+router.get("/:id", getIssueById);
 
 // Close issue
-issueRoutes.put("/close/:id", verifyToken, closeIssue);
-
-// Get issue by ID
-issueRoutes.get("/id/:id", getIssueById);
+router.patch("/:id/close", verifyToken, closeIssue);
 
 // Reopen issue
-issueRoutes.put("/reopen/:id", verifyToken, reopenIssue);
+router.patch("/:id/reopen", verifyToken, reopenIssue);
 
 // Update issue
-issueRoutes.put("/:id", verifyToken, updateIssue);
+router.put("/:id", verifyToken, updateIssue);
 
 // Delete issue
-issueRoutes.delete("/:id", verifyToken, deleteIssue);
+router.delete("/:id", verifyToken, deleteIssue);
+
+export default router;

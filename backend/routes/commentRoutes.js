@@ -9,19 +9,21 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const commentRoutes = express.Router();
+const router = express.Router();
 
 // Add comment
-commentRoutes.post("/", verifyToken, addComment);
+router.post("/", verifyToken, addComment);
 
-// Get comments
-commentRoutes.get("/:issueId", getComments);
+// Get comments of issue
+router.get("/issue/:issueId", getComments);
 
 // Get single comment
-commentRoutes.get("/id/:id", getCommentById);
+router.get("/:id", getCommentById);
 
 // Update comment
-commentRoutes.put("/:id", verifyToken, updateComment);
+router.put("/:id", verifyToken, updateComment);
 
 // Delete comment
-commentRoutes.delete("/:id", verifyToken, deleteComment);
+router.delete("/:id", verifyToken, deleteComment);
+
+export default router;

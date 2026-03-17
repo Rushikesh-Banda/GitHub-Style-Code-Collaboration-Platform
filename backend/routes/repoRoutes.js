@@ -13,31 +13,43 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const repoRoutes = express.Router();
+const router = express.Router();
+
 
 // Create repository
-repoRoutes.post("/", verifyToken, createRepo);
+router.post("/", verifyToken, createRepo);
+
 
 // Get all repositories
-repoRoutes.get("/", getRepos);
+router.get("/", getRepos);
 
-// Get single repository
-repoRoutes.get("/:id", getRepoById);
 
-// Delete repository
-repoRoutes.delete("/:id", verifyToken, deleteRepo);
+// Get collaborators of repo
+router.get("/:id/collaborators", getCollaborators);
 
-// Update repository
-repoRoutes.put("/:id", verifyToken, updateRepo);
 
 // Add collaborator
-repoRoutes.post("/:id/collaborators", verifyToken, addCollaborator);
+router.post("/:id/collaborators", verifyToken, addCollaborator);
 
-// Remove collaborator
-repoRoutes.delete("/:id/collaborators/:userId", verifyToken, removeCollaborator);
 
 // Update collaborator role
-repoRoutes.put("/:id/collaborators/:userId", verifyToken, updateCollaboratorRole);
+router.patch("/:id/collaborators/:userId", verifyToken, updateCollaboratorRole);
 
-// Get collaborators
-repoRoutes.get("/:id/collaborators", getCollaborators);
+
+// Remove collaborator
+router.delete("/:id/collaborators/:userId", verifyToken, removeCollaborator);
+
+
+// Get single repository
+router.get("/:id", getRepoById);
+
+
+// Update repository
+router.patch("/:id", verifyToken, updateRepo);
+
+
+// Delete repository
+router.delete("/:id", verifyToken, deleteRepo);
+
+
+export default router;

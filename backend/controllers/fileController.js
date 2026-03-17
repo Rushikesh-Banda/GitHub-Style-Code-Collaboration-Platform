@@ -1,17 +1,21 @@
+// fileController.js
 import cloudinary from "../config/cloudinary.js";
 
-// Upload file to cloud storage
+// Upload file
 export const uploadFile = async (req, res) => {
   try {
+
     if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({
+        message: "No file uploaded"
+      });
     }
 
-    // Upload file to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
+
     res.status(200).json({
       message: "File uploaded successfully",
-      fileUrl: result.secure_url,
+      fileUrl: result.secure_url
     });
 
   } catch (err) {
@@ -19,7 +23,8 @@ export const uploadFile = async (req, res) => {
   }
 };
 
-// Upload multiple project files
+
+// Upload multiple files
 export const uploadMultipleFiles = async (req, res) => {
   try {
 
@@ -39,6 +44,7 @@ export const uploadMultipleFiles = async (req, res) => {
         fileName: file.originalname,
         fileUrl: result.secure_url
       });
+
     }
 
     res.json({
@@ -52,8 +58,7 @@ export const uploadMultipleFiles = async (req, res) => {
 };
 
 
-
-// Delete file from cloudinary
+// Delete file
 export const deleteFile = async (req, res) => {
   try {
 
@@ -77,8 +82,7 @@ export const deleteFile = async (req, res) => {
 };
 
 
-
-// Replace / update existing file
+// Update file
 export const updateFile = async (req, res) => {
   try {
 
@@ -95,6 +99,21 @@ export const updateFile = async (req, res) => {
       fileUrl: result.secure_url
     });
 
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get single file by ID
+export const getFileById = async (req, res) => {
+  try {
+    const file = await File.findById(req.params.id).populate("uploadedBy", "username email");
+
+    if (!file) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    res.json(file);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

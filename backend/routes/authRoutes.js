@@ -11,29 +11,19 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const authRoutes = express.Router();
+const router = express.Router();
 
-/* ---------------- AUTH ROUTES ---------------- */
+// Auth
+router.post("/register", register);
+router.post("/login", login);
+router.get("/logout", logout);
 
-// Register user
-authRoutes.post("/register", register);
+// Profile
+router.get("/me", verifyToken, getProfile);
+router.put("/change-password", verifyToken, changePassword);
+router.patch("/update-profile", verifyToken, updateProfile);
 
-// Login user
-authRoutes.post("/login", login);
+// Users
+router.get("/users", verifyToken, getAllUsers);
 
-// Logout user
-authRoutes.get("/logout", logout);
-
-// Get logged-in user profile
-authRoutes.get("/me", verifyToken, getProfile);
-
-// Change password
-authRoutes.put("/change-password", verifyToken, changePassword);
-
-// Update user profile
-authRoutes.put("/update-profile", verifyToken, updateProfile);
-
-// Get all users
-authRoutes.get("/users", verifyToken, getAllUsers);
-
-/* --------------------------------------------- */
+export default router;

@@ -10,22 +10,24 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const commitRoutes = express.Router();
+const router = express.Router();
 
 // Create commit
-commitRoutes.post("/", verifyToken, createCommit);
+router.post("/", verifyToken, createCommit);
 
-// Get commits for a repository
-commitRoutes.get("/:repoId", getCommits);
-
-// Get commit by ID
-commitRoutes.get("/id/:id", getCommitById);
-
-// Delete commit
-commitRoutes.delete("/:id", verifyToken, deleteCommit);
-
-// Update commit message
-commitRoutes.put("/:id", verifyToken, updateCommitMessage);
+// Get commits by repo
+router.get("/repo/:repoId", getCommits);
 
 // Get commits by author
-commitRoutes.get("/author/:userId", getCommitsByAuthor);
+router.get("/author/:userId", getCommitsByAuthor);
+
+// Get single commit
+router.get("/:id", getCommitById);
+
+// Update commit message
+router.put("/:id", verifyToken, updateCommitMessage);
+
+// Delete commit
+router.delete("/:id", verifyToken, deleteCommit);
+
+export default router;

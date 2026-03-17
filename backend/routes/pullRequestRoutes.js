@@ -12,28 +12,30 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-export const pullRequestRoutes = express.Router();
+const router = express.Router();
 
 // Create pull request
-pullRequestRoutes.post("/", verifyToken, createPR);
+router.post("/", verifyToken, createPR);
 
-// Get pull requests of repo
-pullRequestRoutes.get("/:repoId", getPRs);
+// Get PRs of a repository
+router.get("/repo/:repoId", getPRs);
 
-// Merge pull request
-pullRequestRoutes.put("/merge/:id", verifyToken, mergePR);
+// Get single PR
+router.get("/:id", getPRById);
 
-// Get PR by ID
-pullRequestRoutes.get("/id/:id", getPRById);
+// Merge PR
+router.patch("/:id/merge", verifyToken, mergePR);
 
 // Close PR
-pullRequestRoutes.put("/close/:id", verifyToken, closePR);
+router.patch("/:id/close", verifyToken, closePR);
 
 // Reopen PR
-pullRequestRoutes.put("/reopen/:id", verifyToken, reopenPR);
+router.patch("/:id/reopen", verifyToken, reopenPR);
 
 // Update PR
-pullRequestRoutes.put("/:id", verifyToken, updatePR);
+router.put("/:id", verifyToken, updatePR);
 
 // Delete PR
-pullRequestRoutes.delete("/:id", verifyToken, deletePR);
+router.delete("/:id", verifyToken, deletePR);
+
+export default router;
